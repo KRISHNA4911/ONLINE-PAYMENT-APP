@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Master Admin Dashboard</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            height: 100vh;
+            font-family: 'Inter', 'Segoe UI', sans-serif;
+            background: #0f172a;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #f8fafc;
+        }
+
+        .dashboard-container {
+            width: 98%;
+            max-width: 1500px;
+            height: 92vh;
+            display: grid;
+            grid-template-columns: 0.6fr 0.4fr;
+            background: #1e293b;
+            border-radius: 30px;
+            box-shadow: 0 50px 100px rgba(0,0,0,0.6);
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .panel { padding: 60px; display: flex; flex-direction: column; }
+        .controls-area { background: rgba(15, 23, 42, 0.5); border-right: 2px solid #334155; overflow-y: auto; text-align: center; }
+        .output-area { background: #1e293b; display: flex; flex-direction: column; text-align: center; }
+
+        h1 { font-size: 4.5rem; font-weight: 800; margin-bottom: 5px; color: #38bdf8; letter-spacing: -3px; }
+        .subtitle { font-size: 1.8rem; color: #94a3b8; margin-bottom: 45px; font-weight: 300; display: block; width: 100%; }
+
+        .control-group { margin-bottom: 35px; display: flex; flex-direction: column; gap: 12px; text-align: left; }
+        input { width: 100%; padding: 20px; background: #0f172a; border: 2px solid #334155; border-radius: 15px; color: white; font-size: 1.1rem; outline: none; }
+        input:focus { border-color: #38bdf8; }
+
+        .btn {
+            width: 100%; padding: 22px; font-size: 1.2rem; font-weight: 700; border: none; border-radius: 15px;
+            cursor: pointer; text-transform: uppercase; transition: all 0.3s ease; display: flex;
+            align-items: center; justify-content: center; gap: 10px;
+        }
+        .btn:hover { transform: translateY(-4px); filter: brightness(1.1); }
+
+        .btn-search { background: linear-gradient(135deg, #0ea5e9, #2563eb); color: white; }
+        .btn-update { background: linear-gradient(135deg, #f59e0b, #d97706); color: #000; }
+        .btn-delete { background: linear-gradient(135deg, #ef4444, #b91c1c); color: white; }
+        .btn-purge { background: #6b21a8; color: white; margin-top: 10px; box-shadow: 0 4px 15px rgba(107, 33, 168, 0.3); }
+
+        .logout-container { display: flex; justify-content: flex-end; margin-top: 15px; }
+        .btn-logout {
+            width: auto; padding: 12px 30px; background: linear-gradient(135deg, #7161ef, #5038ed);
+            color: white; font-size: 0.95rem; border: none; border-radius: 8px; cursor: pointer;
+            text-transform: uppercase; font-weight: 700; transition: all 0.2s; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
+        .btn-logout:hover {
+    transform: translateY(-3px); /* Lifts the button up */
+  /*  filter: brightness(1.2);     Makes the colors pop */
+    /*box-shadow: 0 8px 20px rgba(113, 97, 239, 0.5);  Strong purple glow */
+}
+
+.btn-logout:active {
+    transform: translateY(-1px); /* Slight sink when clicked */
+}
+
+        .display-screen {
+            flex-grow: 1; background: #0f172a; border-radius: 20px; padding: 40px; border: 2px solid #334155;
+            font-size: 1.5rem; color: #f8fafc; display: flex; align-items: center; justify-content: center;
+            text-align: center; box-shadow: inset 0 0 30px rgba(0,0,0,0.5); font-weight: 500; white-space: pre-wrap;
+        }
+
+        /* --- BEAUTIFUL POPUP (MODAL) --- */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(10px);
+            display: none; justify-content: center; align-items: center; z-index: 1000;
+        }
+
+        .modal-box {
+            background: #1e293b; border: 2px solid #334155; border-radius: 25px;
+            padding: 50px; width: 500px; text-align: center; box-shadow: 0 25px 60px rgba(0,0,0,0.7);
+            animation: modalSlide 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .modal-box h2 { font-size: 2.2rem; color: #ef4444; margin-bottom: 15px; }
+        .modal-box p { font-size: 1.3rem; color: #94a3b8; margin-bottom: 35px; line-height: 1.5; }
+
+        .modal-buttons { display: flex; gap: 20px; justify-content: center; }
+        .modal-btn {
+            padding: 15px 35px; border-radius: 12px; border: none; font-weight: 800;
+            cursor: pointer; font-size: 1.1rem; text-transform: uppercase; transition: 0.3s;
+        }
+        .btn-confirm { background: #ef4444; color: white; box-shadow: 0 5px 15px rgba(239, 68, 68, 0.4); }
+        .btn-cancel { background: #475569; color: white; }
+        .modal-btn:hover { transform: scale(1.1); filter: brightness(1.2); }
+
+        @keyframes modalSlide {
+            from { opacity: 0; transform: scale(0.8) translateY(30px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+<div class="dashboard-container">
+    <div class="panel controls-area">
+        <h1>ADMIN - PANEL</h1>
+        <span class="subtitle">System Control Center</span>
+
+        <div class="control-group">
+            <input type="text" id="searchOrderId" placeholder="Enter Order ID to Verify">
+            <button class="btn btn-search" onclick="searchPayment()">🔍 Verify Donation</button>
+        </div>
+
+        <div class="control-group">
+            <input type="text" id="updateOrderId" placeholder="Order ID">
+            <input type="text" id="newName" placeholder="New Donor Name">
+            <button class="btn btn-update" onclick="updateName()">✏️ Update Record</button>
+        </div>
+
+        <div class="control-group">
+            <input type="text" id="deleteOrderId" placeholder="Order ID to Remove">
+            <button class="btn btn-delete" onclick="openModal(false)">❌ Delete Single Entry</button>
+            <button class="btn btn-purge" onclick="openModal(true)">🗑️ Purge All Records</button>
+
+            <div class="logout-container">
+                <form action="/admin/logout" method="post">
+                    <button type="submit" class="btn-logout">🚪 Logout</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="panel output-area">
+        <h1>Donations</h1>
+        <span class="subtitle">Live Results Output</span>
+        <div class="display-screen" id="outputWindow">System Standby...</div>
+    </div>
+</div>
+
+<div class="modal-overlay" id="modalOverlay">
+    <div class="modal-box">
+        <h2 id="modalTitle">Confirm Action</h2>
+        <p id="modalMessage">Are you sure you want to proceed?</p>
+        <div class="modal-buttons">
+            <button class="modal-btn btn-confirm" id="confirmBtn">Yes, Proceed</button>
+            <button class="modal-btn btn-cancel" onclick="closeModal()">Cancel</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    const output = document.getElementById('outputWindow');
+    const modal = document.getElementById('modalOverlay');
+    const confirmBtn = document.getElementById('confirmBtn');
+    let isPurgeAll = false;
+
+    // Helper to show results in the right panel
+    function updateDisplay(message) {
+        output.innerText = message;
+    }
+
+    // 1. SEARCH BACKEND
+    function searchPayment() {
+        const id = document.getElementById('searchOrderId').value.trim();
+        if(!id) return updateDisplay("⚠️ Please enter an Order ID");
+
+        updateDisplay("⏳ Searching...");
+        fetch(`/admin/payment/${id}`)
+            .then(r => r.json())
+            .then(d => {
+                updateDisplay(`NAME: ${d.userName}\nAMOUNT: ₹${d.amount}\nSTATUS: ${d.status}\nID: ${d.paymentId || "N/A"}`);
+            })
+            .catch(() => updateDisplay("❌ Record Not Found"));
+    }
+
+    // 2. UPDATE BACKEND
+    function updateName() {
+        const id = document.getElementById('updateOrderId').value;
+        const name = document.getElementById('newName').value;
+        if(!id || !name) return updateDisplay("⚠️ Fill all fields to update");
+
+        updateDisplay("⏳ Updating...");
+        fetch(`/admin/update-name/${id}?name=${name}`, { method: "PUT" })
+            .then(r => r.json())
+            .then(d => updateDisplay(`✅ Name updated to: ${d.userName}`))
+            .catch(() => updateDisplay("❌ Update Failed"));
+    }
+
+    // 3. DELETE/PURGE MODAL LOGIC
+    function openModal(all) {
+        isPurgeAll = all;
+        const idToDelete = document.getElementById('deleteOrderId').value;
+
+        if(!all && !idToDelete) {
+            updateDisplay("⚠️ Enter an ID to delete");
+            return;
+        }
+
+        document.getElementById('modalTitle').innerText = all ? "⚠️ Database Purge" : "Confirm Delete";
+        document.getElementById('modalMessage').innerText = all
+            ? "This will permanently wipe ALL donation records. This cannot be undone!"
+            : `Delete donation record for ID: ${idToDelete}?`;
+
+        modal.style.display = 'flex';
+    }
+
+    function closeModal() {
+        modal.style.display = 'none';
+    }
+
+    // 4. EXECUTE DELETE ON BACKEND
+    confirmBtn.onclick = function() {
+        const id = document.getElementById('deleteOrderId').value;
+        const url = isPurgeAll ? "/admin/delete-all" : `/admin/delete/${id}`;
+
+        updateDisplay("⏳ Processing Deletion...");
+        fetch(url, { method: "DELETE" })
+            .then(r => r.text())
+            .then(msg => updateDisplay(`🗑️ ${msg}`))
+            .catch(() => updateDisplay("❌ Deletion Failed"))
+            .finally(closeModal);
+    };
+
+    // Close modal on outside click
+    window.onclick = (e) => { if(e.target == modal) closeModal(); };
+</script>
+
+</body>
+</html>
+
+
+

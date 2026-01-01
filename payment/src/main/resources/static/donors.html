@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Krishna Donation - Donors</title>
+
+    <style>
+        *{
+            box-sizing:border-box;
+        }
+
+        body{
+            margin:0;
+            font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background:linear-gradient(135deg,#020617,#0f172a);
+            min-height:100vh;
+            color:#e5e7eb;
+        }
+
+        /* 🔙 BACK BUTTON */
+        .back-btn{
+            position:fixed;
+            top:20px;
+            left:20px;
+            text-decoration:none;
+            font-size:18px;
+            font-weight:700;
+            color:#f9fafb;
+            padding:14px 28px;
+            border-radius:8px;
+            background:#111827;
+            border:1px solid rgba(255,255,255,0.18);
+            transition:all .25s ease;
+            z-index:1000;
+        }
+
+        .back-btn:hover{
+            background:#1f2937;
+            transform:translateY(-2px);
+        }
+
+        /* 🧾 MAIN HEADING */
+        h1{
+            text-align:center;
+            font-size:64px;
+            font-weight:800;
+            margin:110px 0 40px;
+            color:#e0e7ff;
+            letter-spacing:1px;
+        }
+
+        /* 📊 TABLE WRAPPER */
+        .table-wrapper{
+            width:100%;
+            padding:0 20px 40px;
+            overflow-x:auto;
+        }
+
+        /* 📊 TABLE */
+        table{
+            width:100%;
+            border-collapse:collapse;
+            table-layout:fixed;
+        }
+
+        /* TABLE HEADER */
+        thead{
+            background:#020617;
+        }
+
+        th{
+            padding:18px;
+            font-size:18px;          /* ⬅ BIGGER HEADER TEXT */
+            font-weight:700;         /* ⬅ BOLD */
+            color:#f9fafb;
+            letter-spacing:0.6px;
+            border-bottom:1px solid rgba(255,255,255,0.2);
+            text-align:center;
+        }
+
+        /* TABLE BODY */
+        td{
+            padding:16px;
+            font-size:14px;
+            color:#d1d5db;
+            border-bottom:1px solid rgba(255,255,255,0.08);
+            word-break:break-word;
+            overflow-wrap:anywhere;
+            text-align:center;
+        }
+
+        /* ROW HOVER */
+        tbody tr{
+            transition:.2s ease;
+            cursor:pointer;
+        }
+
+        tbody tr:hover{
+            background:rgba(99,102,241,0.12);
+        }
+
+        /* 🌑 POPUP OVERLAY */
+        .popup-overlay{
+            position:fixed;
+            inset:0;
+            background:rgba(0,0,0,0.75);
+            backdrop-filter:blur(5px);
+            display:none;
+            justify-content:center;
+            align-items:center;
+            z-index:2000;
+        }
+
+        /* 💳 POPUP CARD */
+        .popup-card{
+            background:#020617;
+            width:90%;
+            max-width:420px;
+            padding:28px;
+            border-radius:18px;
+            position:relative;
+            box-shadow:0 25px 60px rgba(0,0,0,.8);
+            animation:pop .3s ease;
+        }
+
+        @keyframes pop{
+            from{opacity:0;transform:scale(.85);}
+            to{opacity:1;transform:scale(1);}
+        }
+
+        .popup-card h2{
+            text-align:center;
+            margin-bottom:18px;
+            color:#e0e7ff;
+        }
+
+        .popup-content p{
+            font-size:14px;
+            padding:12px;
+            background:rgba(255,255,255,.05);
+            border-radius:10px;
+            margin-bottom:10px;
+            word-break:break-word;
+        }
+
+        /* ❌ CLOSE */
+        .close-btn{
+            position:absolute;
+            top:10px;
+            right:16px;
+            font-size:26px;
+            cursor:pointer;
+            color:#ef4444;
+        }
+
+        /* 📱 RESPONSIVE */
+        @media(max-width:768px){
+            h1{
+                font-size:38px;
+                margin-top:100px;
+            }
+
+            .back-btn{
+                font-size:16px;
+                padding:12px 22px;
+            }
+
+            th{
+                font-size:15px;   /* mobile header size */
+                padding:14px;
+            }
+
+            td{
+                font-size:12px;
+                padding:10px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<a href="index.html" class="back-btn">⬅ Back to Home</a>
+
+<h1>Our Generous Donors 💙</h1>
+
+<div class="table-wrapper">
+    <table id="donorTable">
+        <thead>
+        <tr>
+            <th style="width:5%">#</th>
+            <th style="width:20%">Name</th>
+            <th style="width:10%">Amount (₹)</th>
+            <th style="width:32%">Order ID</th>
+            <th style="width:33%">Payment ID</th>
+        </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+</div>
+
+<!-- POPUP -->
+<div class="popup-overlay" id="popup">
+    <div class="popup-card">
+        <span class="close-btn" onclick="closePopup()">×</span>
+        <h2>Donor Details</h2>
+        <div class="popup-content">
+            <p><strong>Name:</strong> <span id="pName"></span></p>
+            <p><strong>Amount:</strong> ₹<span id="pAmount"></span></p>
+            <p><strong>Order ID:</strong> <span id="pOrder"></span></p>
+            <p><strong>Payment ID:</strong> <span id="pPayment"></span></p>
+        </div>
+    </div>
+</div>
+
+<script>
+    window.addEventListener("DOMContentLoaded",()=>{
+        fetch("/donors")
+        .then(res=>res.json())
+        .then(data=>{
+            const tbody=document.querySelector("#donorTable tbody");
+            tbody.innerHTML="";
+
+            if(data.length===0){
+                tbody.innerHTML=`<tr><td colspan="5">No donations yet 🌱</td></tr>`;
+                return;
+            }
+
+            data.forEach((d,i)=>{
+                const tr=document.createElement("tr");
+                tr.innerHTML=`
+                    <td>${i+1}</td>
+                    <td>${d.userName}</td>
+                    <td>₹${d.amount}</td>
+                    <td>${d.orderId}</td>
+                    <td>${d.paymentId}</td>
+                `;
+                tr.onclick=()=>openPopup(d);
+                tbody.appendChild(tr);
+            });
+        });
+    });
+
+    function openPopup(d){
+        pName.innerText=d.userName;
+        pAmount.innerText=d.amount;
+        pOrder.innerText=d.orderId;
+        pPayment.innerText=d.paymentId;
+        popup.style.display="flex";
+    }
+
+    function closePopup(){
+        popup.style.display="none";
+    }
+</script>
+
+</body>
+</html>
+
+
+

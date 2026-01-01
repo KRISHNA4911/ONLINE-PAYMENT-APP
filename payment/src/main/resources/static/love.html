@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Krishna Donation | About Us</title>
+
+    <style>
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+        }
+
+        body{
+            font-family: "Segoe UI", Roboto, sans-serif;
+            background:#0b0f14;
+            color:#e5e7eb;
+            line-height:1.8;
+        }
+
+        /* ===== STICKY TOP BAR ===== */
+        .top-bar{
+            position:sticky;
+            top:0;
+            z-index:1000;
+            background:#0b0f14;
+            border-bottom:1px solid rgba(255,255,255,0.08);
+            padding:18px 50px;
+        }
+
+        .back-btn{
+            display:inline-block;
+            text-decoration:none;
+            font-size:16px;
+            font-weight:600;
+            color:#f9fafb;
+            padding:10px 22px;
+            border-radius:6px;
+            background:#111827;
+            border:1px solid rgba(255,255,255,0.15);
+            transition:all 0.25s ease;
+        }
+
+        .back-btn:hover{
+            background:#1f2937;
+            transform:translateY(-1px);
+        }
+
+        /* ===== MAIN PAGE ===== */
+        .page{
+            max-width:1200px;
+            margin:auto;
+            padding:100px 40px 200px;
+        }
+
+        /* ===== HERO ===== */
+        .hero-title{
+            font-size:clamp(3.5rem,6vw,5.5rem);
+            font-weight:800;
+            text-align:center;
+            margin-bottom:25px;
+            letter-spacing:2px;
+            color:#f9fafb;
+        }
+
+        .hero-sub{
+            text-align:center;
+            max-width:900px;
+            margin:0 auto 120px;
+            font-size:22px;
+            color:#9ca3af;
+        }
+
+        /* ===== SECTIONS ===== */
+        .section{
+            margin-bottom:140px;
+        }
+
+        .section h2{
+            font-size:clamp(2.6rem,4vw,3.5rem);
+            font-weight:700;
+            margin-bottom:30px;
+            color:#f3f4f6;
+        }
+
+        .section p{
+            font-size:20px;
+            max-width:1000px;
+            margin-bottom:20px;
+            color:#d1d5db;
+        }
+
+        /* ===== SOFT CARD ===== */
+        .card{
+            padding:60px;
+            background:#0f1623;
+            border-radius:14px;
+            border:1px solid rgba(255,255,255,0.08);
+        }
+
+        /* ===== LIST ===== */
+        ul{
+            padding-left:28px;
+            margin-top:25px;
+        }
+
+        ul li{
+            font-size:19px;
+            margin-bottom:14px;
+            color:#e5e7eb;
+        }
+
+        /* ===== STATS ===== */
+        .stats{
+            display:grid;
+            grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+            gap:40px;
+            margin-top:50px;
+        }
+
+        .stat{
+            padding:45px;
+            text-align:center;
+            background:#111827;
+            border-radius:14px;
+            border:1px solid rgba(255,255,255,0.08);
+        }
+
+        .stat h3{
+            font-size:48px;
+            color:#f9fafb;
+            margin-bottom:8px;
+        }
+
+        .stat span{
+            font-size:18px;
+            color:#9ca3af;
+        }
+
+        /* ===== QUOTE ===== */
+        .quote{
+            text-align:center;
+            font-size:26px;
+            font-style:italic;
+            color:#e5e7eb;
+            margin-top:180px;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media(max-width:768px){
+            .hero-sub{font-size:19px;}
+            .section p{font-size:18px;}
+            .quote{font-size:22px;}
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- BACK BUTTON -->
+<div class="top-bar">
+    <a href="index.html" class="back-btn">← Back to Home</a>
+</div>
+
+<div class="page">
+
+    <!-- HERO -->
+    <h1 class="hero-title">KRISHNA DONATION</h1>
+    <p class="hero-sub">
+        A trusted donation initiative dedicated to compassion, dignity,
+        and meaningful change in the lives of people who need it most.
+    </p>
+
+    <!-- WHO WE ARE -->
+    <div class="section">
+        <h2>Who We Are</h2>
+        <p>
+            Krishna Donation is a social initiative built on trust, responsibility,
+            and humanity. Our purpose is to connect people who want to help with
+            those who genuinely need support.
+        </p>
+        <p>
+            We believe that every act of kindness, when done honestly, has the
+            power to transform lives and strengthen communities.
+        </p>
+    </div>
+
+    <!-- AIM -->
+    <div class="section card">
+        <h2>Our Aim</h2>
+        <p>
+            Our aim is to ensure that no individual feels alone during difficult
+            times. We focus on providing essential support such as food, education,
+            medical assistance, and emergency relief.
+        </p>
+    </div>
+
+    <!-- WHAT WE DO -->
+    <div class="section">
+        <h2>What We Do</h2>
+        <ul>
+            <li>Provide food and basic necessities</li>
+            <li>Support education for underprivileged children</li>
+            <li>Assist families during medical emergencies</li>
+            <li>Organize relief efforts during natural disasters</li>
+            <li>Ensure transparent donation usage</li>
+        </ul>
+    </div>
+
+    <!-- IMPACT -->
+    <div class="section card">
+        <h2>Our Impact</h2>
+        <div class="stats">
+            <div class="stat">
+                <h3>1800+</h3>
+                <span>Donors</span>
+            </div>
+            <div class="stat">
+                <h3>5200+</h3>
+                <span>Lives Helped</span>
+            </div>
+            <div class="stat">
+                <h3>260+</h3>
+                <span>Donation Drives</span>
+            </div>
+            <div class="stat">
+                <h3>100%</h3>
+                <span>Transparency</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- TRUST -->
+    <div class="section">
+        <h2>Why People Trust Us</h2>
+        <ul>
+            <li>Honest and ethical operations</li>
+            <li>Clear communication with donors</li>
+            <li>Responsible use of funds</li>
+            <li>Community-driven approach</li>
+        </ul>
+    </div>
+
+    <!-- VISION -->
+    <div class="section card">
+        <h2>Our Vision</h2>
+        <p>
+            We envision Krishna Donation as a reliable platform that grows with
+            integrity, touches more lives, and continues to inspire a culture
+            of giving and compassion.
+        </p>
+    </div>
+
+    <!-- QUOTE -->
+    <div class="quote">
+        “True devotion is serving humanity with honesty and love.”
+        <br><br>
+        Thank you for supporting Krishna Donation.
+    </div>
+
+</div>
+
+</body>
+</html>

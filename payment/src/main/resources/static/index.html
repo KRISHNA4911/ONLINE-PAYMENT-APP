@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Welcome Krishna Donation</title>
+
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            font-family: 'Segoe UI', sans-serif;
+            background:
+                linear-gradient(rgba(0,0,0,0.35), rgba(0,0,0,0.35)),
+                url('/images/bg.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            background: white;
+            width: 360px;
+            padding: 30px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            position: relative;
+        }
+
+        .container::before {
+            content: "🦚";
+            position: absolute;
+            top: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 50px;
+            background: white;
+            border-radius: 50%;
+            padding: 10px;
+        }
+
+        h1 {
+            margin-top: 30px;
+            color: #6a1b9a;
+            font-size: 26px;
+        }
+
+        p {
+            color: #444;
+            font-size: 16px;
+            margin: 15px 0;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            margin: 8px 0;
+            border-radius: 10px;
+            border: 1px solid #ccc;
+            font-size: 15px;
+        }
+
+        /* PAY NOW */
+        button {
+            width: 100%;
+            padding: 15px;
+            font-size: 18px;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            background: linear-gradient(135deg, #43cea2, #185a9d);
+            color: white;
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+        }
+
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 22px rgba(0,0,0,0.25);
+        }
+
+        /* DONATE WITH LOVE (hover added) */
+        .amount-box {
+            background: linear-gradient(135deg, #ffcc80, #ffe0b2);
+            padding: 15px;
+            border-radius: 12px;
+            margin: 15px 0;
+            font-size: 18px;
+            font-weight: bold;
+            color: #e65100;
+            cursor: pointer;
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+        }
+
+        .amount-box:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(230,81,0,0.4);
+        }
+
+        footer {
+            margin-top: 20px;
+            font-size: 13px;
+            color: #777;
+        }
+
+        /* DONORS (hover added) */
+        .donor-btn {
+            display: inline-block;
+            margin-left: 6px;
+            padding: 6px 16px;
+            background: linear-gradient(135deg, #ff512f, #dd2476);
+            color: #fff;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+        }
+
+        .donor-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(221,36,118,0.5);
+        }
+
+        /* ADMIN PANEL (hover added) */
+        .admin-btn {
+            display: inline-block;
+            margin-top: 12px;
+            padding: 8px 22px;
+            background: linear-gradient(135deg, #00c853, #2e7d32);
+            color: #ffffff;
+            border-radius: 22px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+        }
+
+        .admin-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(46,125,50,0.5);
+        }
+
+        /* THANK YOU POPUP */
+        .thank-popup {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.55);
+            justify-content: center;
+            align-items: center;
+            z-index: 999;
+        }
+
+        .thank-box {
+            background: linear-gradient(135deg, #ff416c, #ff4b2b);
+            padding: 30px 45px;
+            border-radius: 28px;
+            text-align: center;
+            animation: popup 0.4s ease, glow 2s infinite alternate;
+        }
+
+        .thank-box h2 {
+            color: #ffffff;
+            font-size: 26px;
+            font-weight: bold;
+        }
+
+        @keyframes popup {
+            from { transform: scale(0.6); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        @keyframes glow {
+            0% { box-shadow: 0 0 20px rgba(255,75,43,0.6); }
+            50% { box-shadow: 0 0 35px rgba(255,75,43,0.8); }
+            100% { box-shadow: 0 0 20px rgba(255,75,43,0.6); }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+    <h1>WELCOME TO KRISHNA DONATION</h1>
+
+    <p>
+        Support devotion & positivity.<br>
+        Your small contribution makes a big difference.
+    </p>
+
+    <input type="text" id="userName" placeholder="Enter your name">
+    <input type="number" id="amount" placeholder="Enter donation amount (₹)">
+
+    <button onclick="startPayment()"> Pay Now</button>
+
+    <div class="amount-box" onclick="goToLove()"> About Us 💖</div>
+
+    <footer>
+        Thank you for your kindness 🌸
+        <p style="margin-top:10px; font-size:14px;">
+            Click to know about
+            <span class="donor-btn" onclick="viewDonors()">Donors</span>
+        </p>
+
+        <div class="admin-btn" onclick="goToAdmin()">🔐 Admin Panel</div>
+    </footer>
+</div>
+
+<div id="thankPopup" class="thank-popup">
+    <div class="thank-box">
+        <h2>Thank you for Your Donation 😊</h2>
+    </div>
+</div>
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+
+<script>
+    function startPayment() {
+
+        const name = document.getElementById("userName").value.trim();
+        const amount = document.getElementById("amount").value.trim();
+
+        if (name === "" || amount === "" || amount <= 0) {
+            alert("Please enter valid name and amount");
+            return;
+        }
+
+        fetch("/create-order", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                userName: name,
+                amount: amount
+            })
+        })
+        .then(res => res.json())
+        .then(data => {
+
+            var options = {
+                key: "rzp_test_RtR6TqgMazIdkg",   // 🔑 KEY ID HERE
+                amount: data.amount * 100,
+                currency: "INR",
+                order_id: data.orderId,
+                name: "Krishna Donation",
+                description: "Donation by " + name,
+
+                handler: function (response) {
+
+                    fetch("/payment-success", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({
+                            orderId: data.orderId,
+                            paymentId: response.razorpay_payment_id,
+                            status: "SUCCESS"
+                        })
+                    });
+
+                    document.getElementById("thankPopup").style.display = "flex";
+                    setTimeout(() => {
+                        document.getElementById("thankPopup").style.display = "none";
+                    }, 3000);
+                }
+            };
+
+            var rzp = new Razorpay(options);
+
+            rzp.on('payment.failed', function (response) {
+
+                fetch("/payment-failed", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        orderId: response.error.metadata.order_id,
+                        status: "FAILED"
+                    })
+                });
+
+                alert("Payment Failed ❌");
+            });
+
+            rzp.open();
+        });
+    }
+
+    function viewDonors() {
+        window.location.href = "donors.html";
+    }
+
+    function goToAdmin() {
+        window.location.href = "admin.html";
+    }
+
+    function goToLove() {
+        window.location.href = "love.html";
+    }
+</script>
+
+</body>
+</html>
