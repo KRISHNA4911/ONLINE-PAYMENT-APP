@@ -95,8 +95,23 @@ public class PaymentService {
 
     // 1️⃣ SAVE PAYMENT
     public Payment savePayment(Payment payment) {
-        return paymentRepository.save(payment);
+    double amountInRupees = payment.getAmount();
+
+    // 1. Check if amount is less than ₹1
+    if (amountInRupees < 1.0) {
+        return "Minimum payment amount is ₹1.00";
     }
+
+    // 2. Check if amount exceeds Integer Max when converted to paise
+    // Max Rupees allowed is approx 21,474,836.47
+    if (amountInRupees > (Integer.MAX_VALUE / 100.0)) {
+        return "Amount exceed the maximum amount limit";
+    }
+
+    // If valid, save to DB
+    return paymentRepository.save(payment);
+    }
+    
 
     // 2️⃣ PAYMENT SUCCESS
     public Payment updateSuccess(String orderId, String paymentId) {
